@@ -2,7 +2,7 @@
 
 void GameApp::OnInit()
 {
-    block = Assets->LoadTexture("assets/block.png");
+    block = Assets->LoadTexture("images/block.png");
     block.SetPos({ 100, 100 });
 }
 

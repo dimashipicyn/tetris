@@ -24,5 +24,5 @@ Texture Assets::LoadTexture(const std::string& path)
 
 std::string Assets::ResolvePath(const std::string& path) const
 {
-    return "../" + path;
+    return "../assets/" + path;
 }

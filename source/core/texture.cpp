@@ -2,5 +2,5 @@
 
 void Texture::Draw(Renderer* renderer)
 {
-    SDL_RenderCopy(renderer->m_renderer, m_tex_handle, NULL, &m_tex_rect);
+    SDL_RenderCopy(renderer->m_renderer, m_tex_handle, &m_src_rect, &m_dest_rect);
 }
