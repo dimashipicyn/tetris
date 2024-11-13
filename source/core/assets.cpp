@@ -1,6 +1,7 @@
 #include "assets.h"
 
 #include "SDL_image.h"
+#include <SDL_filesystem.h>
 
 Texture Assets::LoadTexture(const std::string& path)
 {
@@ -24,5 +25,5 @@ Texture Assets::LoadTexture(const std::string& path)
 
 std::string Assets::ResolvePath(const std::string& path) const
 {
-    return "../" + path;
+    return std::string(SDL_GetBasePath()) + "../" + path;
 }
