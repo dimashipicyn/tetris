@@ -8,6 +8,8 @@ public:
     Renderer(int width, int height);
     ~Renderer();
 
+    //void DrawTexture(const Texture& tex, SDL_Point pos, SDL_FPoint scale = { 1, 1 });
+
     void Clear();
     void Present();
 

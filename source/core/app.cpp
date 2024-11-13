@@ -2,7 +2,6 @@
 
 bool App::Init()
 {
-    
     Renderer = new ::Renderer(800, 600);
     Assets = new ::Assets(Renderer);
 

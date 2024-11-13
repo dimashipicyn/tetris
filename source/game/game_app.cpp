@@ -2,8 +2,7 @@
 
 void GameApp::OnInit()
 {
-    block = Assets->LoadTexture("images/block.png");
-    block.SetPos({ 100, 100 });
+    pentamino = new Pentamino(Assets, N_Pentamino);
 }
 
 void GameApp::OnInput()
@@ -16,5 +15,5 @@ void GameApp::OnUpdate()
 
 void GameApp::OnRender()
 {
-    block.Draw(Renderer);
+    pentamino->Draw(Renderer);
 }

@@ -2,6 +2,8 @@
 
 #include "core/app.h"
 
+#include "pentamino.h"
+
 class GameApp : public App
 {
 private:
@@ -10,5 +12,5 @@ private:
     void OnUpdate() override;
     void OnRender() override;
 
-    Texture block;
+    Pentamino* pentamino {};
 };
