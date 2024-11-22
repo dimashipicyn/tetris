@@ -3,6 +3,7 @@
 #include "sdl.h"
 #include "assets.h"
 #include "renderer.h"
+#include "scene.h"
 
 class App
 {
@@ -18,6 +19,7 @@ protected:
 
     Assets* Assets {};
     Renderer* Renderer {};
+    Scene* Scene {};
 
 private:
     void Input();

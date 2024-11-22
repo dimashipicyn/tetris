@@ -13,7 +13,7 @@ public:
     {
     }
 	
-    Texture LoadTexture(const std::string& path);
+    Texture LoadTexture(const std::string& path, const SDL_Point& size = {});
 
 private:
     std::string ResolvePath(const std::string& path) const;

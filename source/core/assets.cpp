@@ -3,7 +3,7 @@
 #include "SDL_image.h"
 #include <SDL_filesystem.h>
 
-Texture Assets::LoadTexture(const std::string& path)
+Texture Assets::LoadTexture(const std::string& path, const SDL_Point& size)
 {
     auto it = m_textures.find(path);
     if (it != m_textures.end())
@@ -19,6 +19,12 @@ Texture Assets::LoadTexture(const std::string& path)
     }
 
     Texture texture(tex_handle);
+    if (size.x != 0 && size.y != 0)
+    {
+        texture.Dest.w = size.x;
+        texture.Dest.h = size.y;
+    }
+
     m_textures.emplace(std::make_pair(path, texture));
     return texture;
 }

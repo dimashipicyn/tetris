@@ -38,7 +38,7 @@ public:
     Pentamino(Assets* assets, PentaminoDef def)
         : m_def {def}
     {
-        m_texture = assets->LoadTexture("images/block.png");
+        m_texture = assets->LoadTexture("images/block.png", {32, 32});
     }
 
     void Draw(Renderer* renderer);

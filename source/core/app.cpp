@@ -4,6 +4,7 @@ bool App::Init()
 {
     Renderer = new ::Renderer(800, 600);
     Assets = new ::Assets(Renderer);
+    Scene = new ::Scene;
 
     m_ticks = SDL_GetTicks();
 
@@ -55,12 +56,16 @@ void App::Input()
 
 void App::Update()
 {
+    Scene->Update();
     OnUpdate();
 }
 
 void App::Render()
 {
     Renderer->Clear();
+
+    Scene->Render(Renderer);
     OnRender();
+    
     Renderer->Present();
 }
