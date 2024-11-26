@@ -2,7 +2,7 @@
 
 void GameApp::OnInit()
 {
-    pentamino = new Pentamino(Assets, N_Pentamino);
+    pentamino = new Pentamino(N_Pentamino, Scene);
 }
 
 void GameApp::OnInput()
@@ -15,5 +15,4 @@ void GameApp::OnUpdate()
 
 void GameApp::OnRender()
 {
-    pentamino->Draw(Renderer);
 }

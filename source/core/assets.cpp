@@ -3,7 +3,7 @@
 #include "SDL_image.h"
 #include <SDL_filesystem.h>
 
-Texture Assets::LoadTexture(const std::string& path, const SDL_Point& size)
+Texture Assets::GetTexture(const std::string& path, const Size& size)
 {
     auto it = m_textures.find(path);
     if (it != m_textures.end())

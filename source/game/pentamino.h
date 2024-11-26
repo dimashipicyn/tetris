@@ -1,8 +1,6 @@
 #pragma once
 
-#include "core/texture.h"
-#include "core/assets.h"
-#include "core/renderer.h"
+#include "core/sprite.h"
 
 #include <array>
 #include <cstdint>
@@ -32,18 +30,17 @@ constexpr const PentaminoDef N_Pentamino = {
 
 //, P, F, Y, T, V, U, W, Z, I, X
 
-class Pentamino
+class Pentamino : public Sprite
 {
 public:
-    Pentamino(Assets* assets, PentaminoDef def)
-        : m_def {def}
+    Pentamino(PentaminoDef def, SceneObject* parent = nullptr)
+        : Sprite("images/block.png", parent, {32, 32})
+        , m_def {def}
     {
-        m_texture = assets->LoadTexture("images/block.png", {32, 32});
     }
 
     void Draw(Renderer* renderer);
 
 private:
-    Texture m_texture {};
     PentaminoDef m_def {};
 };

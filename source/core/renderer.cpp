@@ -15,6 +15,10 @@ Renderer::Renderer(int width, int height)
         SDL_Log("SDL_CreateWindowAndRenderer() failed: %s\n", SDL_GetError());
         return;
     }
+
+    /*const auto view = SDL_Rect { 0, 0, 50, 50 };
+    SDL_RenderSetViewport(m_renderer, &view);*/
+    //SDL_RenderSetScale(m_renderer, 10, 10);
 }
 
 Renderer::~Renderer()
@@ -25,6 +29,7 @@ Renderer::~Renderer()
 
 void Renderer::Clear()
 {
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
     SDL_RenderClear(m_renderer);
 }
 

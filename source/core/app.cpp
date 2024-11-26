@@ -1,5 +1,9 @@
 #include "app.h"
 
+Assets* App::Assets {};
+Renderer* App::Renderer {};
+Scene* App::Scene {};
+
 bool App::Init()
 {
     Renderer = new ::Renderer(800, 600);
@@ -64,7 +68,7 @@ void App::Render()
 {
     Renderer->Clear();
 
-    Scene->Render(Renderer);
+    Scene->Draw(Renderer);
     OnRender();
     
     Renderer->Present();

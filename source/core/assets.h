@@ -1,9 +1,12 @@
 #pragma once
 
 #include "texture.h"
+#include "aliases.h"
 
 #include <map>
 #include <string>
+
+class App;
 
 class Assets
 {
@@ -13,11 +16,11 @@ public:
     {
     }
 	
-    Texture LoadTexture(const std::string& path, const SDL_Point& size = {});
+    Texture GetTexture(const std::string& path, const Size& size = {});
 
 private:
     std::string ResolvePath(const std::string& path) const;
 
-    Renderer* m_renderer;
+    Renderer* m_renderer {};
     std::map<std::string, Texture> m_textures {};
 };

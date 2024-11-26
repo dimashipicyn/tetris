@@ -11,15 +11,15 @@ public:
     bool Init();
     void Run();
 
+    static Assets* Assets;
+    static Renderer* Renderer;
+    static Scene* Scene;
+
 protected:
     virtual void OnInit() = 0;
     virtual void OnInput() = 0;
     virtual void OnUpdate() = 0;
     virtual void OnRender() = 0;
-
-    Assets* Assets {};
-    Renderer* Renderer {};
-    Scene* Scene {};
 
 private:
     void Input();

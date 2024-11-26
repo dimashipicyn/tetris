@@ -1,19 +1,22 @@
 #pragma once
 
-#include "aliases.h"
 #include "renderer.h"
 
-#include <memory>
+#include <vector>
 
-class Object
+class SceneObject
 {
 public:
-    virtual ~Object() = default;
-    virtual void Update() = 0;
-    virtual void Draw(Renderer* renderer) = 0;
+    SceneObject(SceneObject* parent = nullptr);
+    virtual ~SceneObject();
+    
+    void AddChild(SceneObject* obj, int depth = 0);
+    void RemoveChild(SceneObject* obj);
+
+    virtual void Update();
+    virtual void Draw(Renderer* renderer);
+
+private:
+    std::vector<SceneObject*> m_childs {};
+    SceneObject* m_parent {};
 };
-
-using ObjectPtr = std::shared_ptr<Object>;
-
-template<class T, class... Args>
-using MakeObject = std::make_shared<T>(Args...&& args);
