@@ -1,8 +1,8 @@
 #include "app.h"
 
-Assets* App::Assets {};
-Renderer* App::Renderer {};
-Scene* App::Scene {};
+Assets* App::Assets;
+Renderer* App::Renderer;
+Scene* App::Scene;
 
 bool App::Init()
 {
@@ -10,30 +10,31 @@ bool App::Init()
     Assets = new ::Assets(Renderer);
     Scene = new ::Scene;
 
-    m_ticks = SDL_GetTicks();
-
     OnInit();
     return true;
 }
 
 void App::Run()
 {
+    m_prev_ticks = SDL_GetTicks();
     while (m_running)
     {
         auto now = SDL_GetTicks();
-        auto elapsed = now - m_ticks;
+        auto elapsed = now - m_prev_ticks;
+        m_prev_ticks = now;
         
         Input();
         
-        while ((now - m_ticks) >= m_step_time_ms)
+        m_ticks_acc += elapsed;
+        while (m_ticks_acc >= m_step_time_ms)
         {
             Update();
-            m_ticks += m_step_time_ms;
+            m_ticks_acc -= m_step_time_ms;
         }
 
         Render();
 
-        auto delay = m_step_time_ms - elapsed;
+        int delay = m_frame_time_ms - elapsed;
         if (delay > 0)
         {
             SDL_Delay(delay);

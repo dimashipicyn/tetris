@@ -39,7 +39,8 @@ public:
     {
     }
 
-    void Draw(Renderer* renderer);
+    void Update() override;
+    void Draw(Renderer* renderer) override;
 
 private:
     PentaminoDef m_def {};

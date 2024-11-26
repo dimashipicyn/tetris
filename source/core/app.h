@@ -26,9 +26,11 @@ private:
     void Update();
     void Render();
 
-    int64_t m_ticks {};
+    uint32_t m_prev_ticks {};
+    uint32_t m_ticks_acc {};
 
-    int m_step_time_ms = 16;
+    uint32_t m_step_time_ms = 16;
+    int32_t m_frame_time_ms = 16;
 
     bool m_running = true;
 };
