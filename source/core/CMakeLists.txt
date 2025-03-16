@@ -8,9 +8,4 @@ target_sources(${PROJECT_NAME} PUBLIC
     assets.cpp
     renderer.h
     renderer.cpp
-    scene_object.h
-    scene_object.cpp
-    scene.h
-    sprite.h
-    sprite.cpp
 )

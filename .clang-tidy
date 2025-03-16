@@ -5,23 +5,23 @@ CheckOptions:
   - key:             readability-identifier-naming.EnumCase
     value:           CamelCase
   - key:             readability-identifier-naming.FunctionCase
-    value:           camelBack
+    value:           CamelCase
   # Exclude from scanning as this is an exported symbol used for fuzzing
   # throughout the code base.
   - key:             readability-identifier-naming.FunctionIgnoredRegexp
     value:           "LLVMFuzzerTestOneInput"
-  - key:             readability-identifier-naming.MemberCase
-    value:           camelBack
+  - key:             readability-identifier-naming.PrivateMemberCase
+    value:           snake_case
   - key:             readability-identifier-naming.ParameterCase
-    value:           camelBack
+    value:           snake_case
   - key:             readability-identifier-naming.UnionCase
     value:           CamelCase
   - key:             readability-identifier-naming.VariableCase
-    value:           camelBack
+    value:           snake_case
   - key:             readability-identifier-naming.IgnoreMainLikeFunctions
     value:           1
-  - key:             readability-identifier-naming.MemberSuffix
-    value:           _
+  - key:             readability-identifier-naming.PrivateMemberPrefix
+    value:           m_
   - key:             readability-redundant-member-init.IgnoreBaseInCopyConstructors
     value:           1
   - key:             modernize-use-default-member-init.UseAssignment

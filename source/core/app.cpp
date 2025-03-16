@@ -1,14 +1,10 @@
 #include "app.h"
 
-Assets* App::Assets;
-Renderer* App::Renderer;
-Scene* App::Scene;
-
-bool App::Init()
+bool App::Init(const Size& window_size)
 {
-    Renderer = new ::Renderer(800, 600);
+    Renderer = new ::Renderer(window_size.x, window_size.y);
     Assets = new ::Assets(Renderer);
-    Scene = new ::Scene;
+    Input = new ::Input();
 
     OnInit();
     return true;
@@ -22,11 +18,13 @@ void App::Run()
         auto now = SDL_GetTicks();
         auto elapsed = now - m_prev_ticks;
         m_prev_ticks = now;
+
+        DeltaTime = elapsed / 1000.0f;
         
-        Input();
+        HandleEvents();
         
         m_ticks_acc += elapsed;
-        while (m_ticks_acc >= m_step_time_ms)
+        // while (m_ticks_acc >= m_step_time_ms)
         {
             Update();
             m_ticks_acc -= m_step_time_ms;
@@ -42,26 +40,14 @@ void App::Run()
     }
 }
 
-void App::Input()
+void App::HandleEvents()
 {
-    SDL_Event ev;
-    while (SDL_PollEvent(&ev))
-    {
-        switch (ev.type)
-        {
-        case SDL_QUIT:
-            m_running = false;
-            break;
-        default:
-            break;
-        }
-    }
-    OnInput();
+    Input->PollEvents();
+    m_running = !Input->IsExit();
 }
 
 void App::Update()
 {
-    Scene->Update();
     OnUpdate();
 }
 
@@ -69,7 +55,6 @@ void App::Render()
 {
     Renderer->Clear();
 
-    Scene->Draw(Renderer);
     OnRender();
     
     Renderer->Present();

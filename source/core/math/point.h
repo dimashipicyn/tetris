@@ -2,6 +2,9 @@
 
 #include <SDL.h>
 
-SDL_Point SubPoint(const SDL_Point& l, const SDL_Point& r);
-SDL_Point AddPoint(const SDL_Point& l, const SDL_Point& r);
-SDL_Point RotatedPoint(const SDL_Point& center, float angle_rad, const SDL_Point& p);
+using Point = SDL_Point;
+using FPoint = SDL_FPoint;
+
+Point SubPoint(const Point& l, const Point& r);
+Point AddPoint(const Point& l, const Point& r);
+Point RotatedPoint(const Point& center, float angle_rad, const SDL_Point& p);

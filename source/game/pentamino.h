@@ -1,47 +1,61 @@
 #pragma once
 
-#include "core/sprite.h"
+#include "cell.h"
 
-#include <array>
-#include <cstdint>
+#include "core/app.h"
+#include "core/assets.h"
+#include "core/math/matrix.h"
+#include "core/math/point.h"
+#include "core/texture.h"
 
-using PentaminoDef = std::array<SDL_Point, 5>;
+#include <optional>
 
-constexpr const PentaminoDef L_Pentamino = {
-    {
-        { 0, 0 },
-        { 0, 1 },
-        { 0, 2 },
-        { 0, 3 },
-        { 1, 3 },
-    }
+enum class TetraminoType
+{
+    Z,
+    L,
+    O,
+    S,
+    I,
+    J,
+    T,
+
+    Count
 };
 
-constexpr const PentaminoDef N_Pentamino = {
-    {
-        { 1, 0 },
-        { 1, 1 },
-        { 1, 2 },
-        { 0, 2 },
-        { 0, 3 },
-    }
-};
+using TetraminoDef = Matrix<bool, 4>;
 
-
-//, P, F, Y, T, V, U, W, Z, I, X
-
-class Pentamino : public Sprite
+class Tetramino
 {
 public:
-    Pentamino(PentaminoDef def, SceneObject* parent = nullptr)
-        : Sprite("images/block.png", parent, {32, 32})
-        , m_def {def}
+    Tetramino(App& app, const Point& pos, float speed, TetraminoType type)
+        : m_def(FromType(type))
+        , m_cell(app.Assets->GetTexture("images/block.png", {CellSize, CellSize}), Colors::Red)
+        , m_pos(pos)
+        , m_speed(speed)
     {
     }
 
-    void Update() override;
-    void Draw(Renderer* renderer) override;
+    void Update(App& app);
+    void Draw(App& app);
+
+    const TetraminoDef& GetTetraminoDef() const
+    {
+        return m_def;
+    }
 
 private:
-    PentaminoDef m_def {};
+    static const TetraminoDef& FromType(TetraminoType type);
+
+    TetraminoDef m_def{};
+    Cell m_cell;
+
+    Point m_pos{};
+    FPoint m_pos_accumulator{};
+
+    float m_move_horizontal_delta_accum{};
+    float m_speed{};
+    float m_horizontal_speed{0.05f/ m_speed};
+
+    static constexpr size_t CellSize = 32;
 };

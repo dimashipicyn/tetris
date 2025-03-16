@@ -15,11 +15,3 @@ Texture::Texture(SDL_Texture* tex)
     Dest.w = Src.w;
     Dest.h = Src.h;
 }
-
-void Texture::Draw(Renderer* renderer)
-{
-    SDL_Rect dest { Dest.x, Dest.y,
-        static_cast<int>(Dest.w * Scale.x),
-        static_cast<int>(Dest.h * Scale.y) };
-    SDL_RenderCopy(renderer->m_renderer, m_tex_handle.get(), &Src, &dest);
-}
