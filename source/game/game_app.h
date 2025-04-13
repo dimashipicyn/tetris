@@ -7,7 +7,7 @@
 
 class GameApp : public App
 {
-private:
+public:
     void OnInit() override;
     void OnUpdate() override;
     void OnRender() override;

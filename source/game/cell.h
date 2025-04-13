@@ -9,7 +9,8 @@
 class Cell
 {
 public:
-    Cell(const Texture& texture, const Color& color)
+    // Cell() = default;
+    Cell(const Texture& texture, const Color& color = Colors::WHITE)
         : m_texture(texture)
         , m_color(color)
     {}
@@ -28,7 +29,11 @@ public:
         return {m_texture.Dest.w, m_texture.Dest.h};
     }
 
+    void SetColor(const Color& color) {
+        m_color = color;
+    }
+
 private:
     Texture m_texture;
-    Color m_color = Colors::White;
+    Color m_color;
 };

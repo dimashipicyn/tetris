@@ -4,4 +4,6 @@ PRIVATE
 	game_app.cpp
 	pentamino.h
 	pentamino.cpp
+	board.h
+	board.cpp
 )

@@ -15,7 +15,7 @@ Texture Assets::GetTexture(const std::string& path, const Size& size)
     if (!tex_handle)
     {
         SDL_Log("LoadTexture() failed: %s\n", SDL_GetError());
-        return { };
+        return { nullptr };
     }
 
     Texture texture(tex_handle);

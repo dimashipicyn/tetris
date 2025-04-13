@@ -85,6 +85,10 @@ public:
         return m_data[row];
     }
 
+    const T* operator[](int row) const {
+        return m_data[row];
+    }
+
 private:
     T m_data[Rows][Cols]{};
 };

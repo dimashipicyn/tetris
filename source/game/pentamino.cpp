@@ -1,114 +1,149 @@
 #include "pentamino.h"
 
+#include "board.h"
+#include "core/color.h"
 #include "core/input.h"
 #include "core/math/point.h"
+
+#include "constant.h"
+#include "game/game_app.h"
+
 #include <SDL_scancode.h>
 
-void Tetramino::Update(App& app)
+Tetramino::Tetramino(GameApp& app, const Point& pos, float speed, TetraminoType type)
+    : m_figure(FromType(app.Assets, type))
+    , m_pos(pos)
+    , m_speed(speed)
 {
-    m_pos_accumulator.y += m_speed;
-    if (m_pos_accumulator.y / CellSize > 0) {
-        int cells = m_pos_accumulator.y / CellSize;
-        m_pos.y += cells * CellSize;
-        m_pos_accumulator.y = m_pos_accumulator.y - cells * CellSize;
-    }
+}
 
+void Tetramino::Update(GameApp& app)
+{
     m_move_horizontal_delta_accum += app.DeltaTime;
 
+    Point new_pos = m_pos;
     if (app.Input->IsKeyDown(SDL_SCANCODE_LEFT))
     {
         if (m_move_horizontal_delta_accum >= m_horizontal_speed) {
-            m_pos.x -= CellSize;
+            new_pos.x -= 1;
             m_move_horizontal_delta_accum = 0;
         }
     }
     if (app.Input->IsKeyDown(SDL_SCANCODE_RIGHT))
     {
         if (m_move_horizontal_delta_accum >= m_horizontal_speed) {
-            m_pos.x += CellSize;
+            new_pos.x += 1;
             m_move_horizontal_delta_accum = 0;
         }
     }
-    auto rotated = m_def;
+
+    auto rotated = m_figure;
     if (app.Input->IsKeyClicked(SDL_SCANCODE_UP))
     {
-        rotated = m_def.Rotate(MatrixRotateDir::Left);
+        rotated = m_figure.Rotate(MatrixRotateDir::Left);
     }
     if (app.Input->IsKeyClicked(SDL_SCANCODE_DOWN))
     {
-        rotated = m_def.Rotate(MatrixRotateDir::Right);
+        rotated = m_figure.Rotate(MatrixRotateDir::Right);
     }
 
-    m_def = rotated; 
+    Board* board = app.board;
+    if (!board->Intersect(new_pos, rotated))
+    {
+        m_pos = new_pos;
+        m_figure = rotated;
+    }
+
+    m_pos_accumulator += m_speed;
+    if (m_pos_accumulator >= CellSize) {
+        m_pos.y += 1;
+        m_pos_accumulator -= CellSize;
+    }
 }
 
-void Tetramino::Draw(App& app)
+void Tetramino::Draw(GameApp& app)
 {
-    for (size_t row = 0; row < m_def.GetRows(); row++)
+    for (size_t row = 0; row < m_figure.GetRows(); row++)
     {
-        for (size_t col = 0; col < m_def.GetCols(); col++)
+        for (size_t col = 0; col < m_figure.GetCols(); col++)
         {
-            const bool v = m_def.Value(row, col);
+            auto v = m_figure.Value(row, col);
             if (v)
             {
                 Point pos;
-                pos.x = m_pos.x + CellSize * col;
-                pos.y = m_pos.y + CellSize * row;
+                pos.x = m_pos.x * CellSize + CellSize * col;
+                pos.y = m_pos.y * CellSize + CellSize * row;
 
-                m_cell.SetPos(pos);
-                m_cell.Draw(app);
+                v->SetPos(pos);
+                v->Draw(app);
             }
         }
     }
 }
 
-const TetraminoDef& Tetramino::FromType(TetraminoType type)
+const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
 {
-    static TetraminoDef defs[(size_t)TetraminoType::Count] = {
-        {
-            false, true,  false, false,
-            true,  true,  false, false,
-            true,  false, false, false,
-            false, false, false, false,
-        },  // Z
-        {
-            false, true,  false, false, 
-            false, true,  false, false, 
-            false, true,  true,  false,
-            false, false, false, false,
-        },  // L
-        {
-            true,  true,  false, false,
-            true,  true,  false, false,
-            false, false, false, false,
-            false, false, false, false,
-        },  // O
-        {
-            false, true,  false, false,
-            false, true,  true,  false,
-            false, false, true,  false,
-            false, false, false, false,
+    Cell cell{assets->GetTexture("images/block.png", {CellSize, CellSize})};
+    static Figure figures[(size_t)TetraminoType::Count] = {};
+    
+    static bool first = true;
+    if (std::exchange(first, false)) {
+        cell.SetColor(Colors::RED);
+        figures[(size_t)TetraminoType::Z] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            cell,  cell,  std::nullopt, std::nullopt,
+            cell,  std::nullopt, std::nullopt, std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
 
-        },   // S
-        {
-            false, true,  false, false,
-            false, true,  false, false,
-            false, true,  false, false,
-            false, true,  false, false,
-        },  // I
-        {
-            false, true,  false, false,
-            false, true,  false, false,
-            true,  true,  false, false,
-            false, false, false, false,
-        },  // J
-        {
-            false, true,  false, false,
-            true,  true,  true, false,
-            false, false, false, false,
-            false, false, false, false,
-        }  // T
-    };
+        cell.SetColor(Colors::YELLOW);
+        figures[(size_t)TetraminoType::L] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt, 
+            std::nullopt, cell,  std::nullopt, std::nullopt, 
+            std::nullopt, cell,  cell,  std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
 
-    return defs[(size_t)type];
+        cell.SetColor(Colors::GREEN);
+        figures[(size_t)TetraminoType::O] = {
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+            std::nullopt, cell,  cell, std::nullopt,
+            std::nullopt, cell,  cell,  std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
+
+        cell.SetColor(Colors::CYAN);
+        figures[(size_t)TetraminoType::S] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            std::nullopt, cell,  cell,  std::nullopt,
+            std::nullopt, std::nullopt, cell,  std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
+
+        cell.SetColor(Colors::PURPLE);
+        figures[(size_t)TetraminoType::I] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+        };
+
+        cell.SetColor(Colors::PINK);
+        figures[(size_t)TetraminoType::J] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            cell,  cell,  std::nullopt, std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
+
+        cell.SetColor(Colors::BROWN);
+        figures[(size_t)TetraminoType::T] = {
+            std::nullopt, cell,  std::nullopt, std::nullopt,
+            cell,  cell,  cell, std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        };
+    }
+
+    return figures[(size_t)type];
 }

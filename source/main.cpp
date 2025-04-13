@@ -8,8 +8,8 @@ int main(int, char**)
     GameApp app;
 
     Size wsize{
-        Board::Width * Board::CellSize,
-        Board::Height * Board::CellSize
+        Width * CellSize,
+        Height * CellSize
     };
 
     app.Init(wsize);

@@ -10,7 +10,7 @@ class Texture
 {
     friend class Renderer;
 public:
-    Texture(SDL_Texture* tex = nullptr);
+    Texture(SDL_Texture* tex);
 
     SDL_Rect Dest {};
     SDL_Rect Src {};
