@@ -1,5 +1,6 @@
 #include "board.h"
 
+#include "core/color.h"
 #include "core/math/point.h"
 #include "game_app.h"
 #include <cstddef>
@@ -22,11 +23,16 @@ void Board::Update(GameApp& app)
             NextFigure();
         }
 
-        if (auto r = FindFilledRow(); r)
+        if (!m_delete_row_anim)
         {
-            DeleteRow(*r);
+            if (auto r = FindFilledRow(); r)
+            {
+                m_delete_row_anim = MakeDeleteColorAnimation(*r);
+            }
         }
     }
+
+    if (m_delete_row_anim) m_delete_row_anim();
 }
 
 void Board::Draw(GameApp& app)
@@ -133,7 +139,7 @@ void Board::NextFigure()
     }
 
     delete m_current;
-    m_current = m_figure_gen.MakeRandFigure(m_app, { 0, 0 }, 0.5f);
+    m_current = m_figure_gen.MakeRandFigure(m_app, { 0, 0 }, 1.5f);
 }
 
 void Board::DeleteRow(size_t row)
@@ -176,4 +182,24 @@ std::optional<size_t> Board::FindFilledRow() const
         }
     }
     return std::nullopt;
+}
+
+std::function<void()> Board::MakeDeleteColorAnimation(size_t row)
+{
+    return [this, row, alfa = (int)Colors::Opaque.a]() mutable
+    {
+        alfa -= 5;
+        for (size_t c = 0; c < m_board_matrix.GetCols(); c++)
+        {
+            auto& v = m_board_matrix[row][c];
+            if (v)
+                v->Color().a = alfa;
+        }
+
+        if (alfa <= 0)
+        {
+            DeleteRow(row);
+            m_delete_row_anim = nullptr;
+        }
+    };
 }

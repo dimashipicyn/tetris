@@ -88,7 +88,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
     
     static bool first = true;
     if (std::exchange(first, false)) {
-        cell.SetColor(Colors::RED);
+        cell.Color() = Colors::RED;
         figures[(size_t)TetraminoType::Z] = {
             std::nullopt, cell,  std::nullopt, std::nullopt,
             cell,  cell,  std::nullopt, std::nullopt,
@@ -96,7 +96,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::YELLOW);
+        cell.Color() = Colors::YELLOW;
         figures[(size_t)TetraminoType::L] = {
             std::nullopt, cell,  std::nullopt, std::nullopt, 
             std::nullopt, cell,  std::nullopt, std::nullopt, 
@@ -104,7 +104,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::GREEN);
+        cell.Color() = Colors::GREEN;
         figures[(size_t)TetraminoType::O] = {
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
             std::nullopt, cell,  cell, std::nullopt,
@@ -112,7 +112,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::CYAN);
+        cell.Color() = Colors::CYAN;
         figures[(size_t)TetraminoType::S] = {
             std::nullopt, cell,  std::nullopt, std::nullopt,
             std::nullopt, cell,  cell,  std::nullopt,
@@ -120,7 +120,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::PURPLE);
+        cell.Color() = Colors::PURPLE;
         figures[(size_t)TetraminoType::I] = {
             std::nullopt, cell,  std::nullopt, std::nullopt,
             std::nullopt, cell,  std::nullopt, std::nullopt,
@@ -128,7 +128,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, cell,  std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::PINK);
+        cell.Color() = Colors::PINK;
         figures[(size_t)TetraminoType::J] = {
             std::nullopt, cell,  std::nullopt, std::nullopt,
             std::nullopt, cell,  std::nullopt, std::nullopt,
@@ -136,7 +136,7 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
-        cell.SetColor(Colors::BROWN);
+        cell.Color() = Colors::BROWN;
         figures[(size_t)TetraminoType::T] = {
             std::nullopt, cell,  std::nullopt, std::nullopt,
             cell,  cell,  cell, std::nullopt,

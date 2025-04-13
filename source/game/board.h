@@ -8,6 +8,7 @@
 #include "figure_generator.h"
 #include "pentamino.h"
 #include "constant.h"
+#include <functional>
 #include <optional>
 
 class Board
@@ -24,6 +25,7 @@ private:
     void NextFigure();
     void DeleteRow(size_t row);
     std::optional<size_t> FindFilledRow() const;
+    std::function<void()> MakeDeleteColorAnimation(size_t row);
     
     static constexpr const Color HalfTransparent{255, 255, 255, Colors::WHITE.a / 2};
 
@@ -32,4 +34,6 @@ private:
     GameApp& m_app;
     Tetramino* m_current = nullptr;
     FigureGenerator m_figure_gen{};
+
+    std::function<void()> m_delete_row_anim;
 };

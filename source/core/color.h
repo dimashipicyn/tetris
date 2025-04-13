@@ -7,6 +7,7 @@ using Color = SDL_Color;
 namespace Colors
 {
 constexpr const Color Transparent = { 0, 0, 0, SDL_ALPHA_TRANSPARENT };
+constexpr const Color Opaque = { 0, 0, 0, SDL_ALPHA_OPAQUE };
 
 constexpr const Color RED = {255, 0, 0, 255};        // Red
 constexpr const Color GREEN = {0, 255, 0, 255};      // Green
