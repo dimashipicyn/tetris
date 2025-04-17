@@ -24,8 +24,9 @@ private:
     void DrawCells(GameApp& app);
     void NextFigure();
     void DeleteRow(size_t row);
-    std::optional<size_t> FindFilledRow() const;
-    std::function<void()> MakeDeleteColorAnimation(size_t row);
+    std::vector<size_t> FindFilledRows() const;
+    std::function<void()> MakeDeleteColorAnimation(std::vector<size_t> rows);
+    Tetramino* MakeFigure();
     
     static constexpr const Color HalfTransparent{255, 255, 255, Colors::WHITE.a / 2};
 
@@ -36,4 +37,7 @@ private:
     FigureGenerator m_figure_gen{};
 
     std::function<void()> m_delete_row_anim;
+
+    float m_current_speed{MinFigureSpeed};
+    // int m_removed_rows{0};
 };

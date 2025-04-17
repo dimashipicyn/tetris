@@ -61,4 +61,7 @@ private:
     float m_move_horizontal_delta_accum{};
     float m_speed{};
     float m_horizontal_speed{0.05f / m_speed};
+
+    float m_down_current_time{};
+    float m_move_horizontal_current_time{};
 };

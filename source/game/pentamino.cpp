@@ -7,6 +7,7 @@
 
 #include "constant.h"
 #include "game/game_app.h"
+#include "core/math/easing.h"
 
 #include <SDL_scancode.h>
 
@@ -19,30 +20,44 @@ Tetramino::Tetramino(GameApp& app, const Point& pos, float speed, TetraminoType 
 
 void Tetramino::Update(GameApp& app)
 {
-    m_move_horizontal_delta_accum += app.DeltaTime;
-
     Point new_pos = m_pos;
-    if (app.Input->IsKeyDown(SDL_SCANCODE_LEFT))
+
+    float speed = m_horizontal_speed;
+    if (app.Input->IsKeyClicked(SDL_SCANCODE_LEFT))
     {
-        if (m_move_horizontal_delta_accum >= m_horizontal_speed) {
+        new_pos.x -= 1;
+    }
+    else if (app.Input->IsKeyDown(SDL_SCANCODE_LEFT))
+    {
+        speed = ease_apply(m_horizontal_speed, DownSpeed, &m_move_horizontal_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+        if (m_move_horizontal_delta_accum >= CellSize)
+        {
             new_pos.x -= 1;
-            m_move_horizontal_delta_accum = 0;
+            m_move_horizontal_delta_accum -= CellSize;
         }
     }
-    if (app.Input->IsKeyDown(SDL_SCANCODE_RIGHT))
+    else if (app.Input->IsKeyClicked(SDL_SCANCODE_RIGHT))
     {
-        if (m_move_horizontal_delta_accum >= m_horizontal_speed) {
+        new_pos.x += 1;
+    }
+    else if (app.Input->IsKeyDown(SDL_SCANCODE_RIGHT))
+    {
+        speed = ease_apply(m_horizontal_speed, DownSpeed, &m_move_horizontal_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+        if (m_move_horizontal_delta_accum >= CellSize)
+        {
             new_pos.x += 1;
-            m_move_horizontal_delta_accum = 0;
+            m_move_horizontal_delta_accum -= CellSize;
         }
     }
+    else
+    {
+        m_move_horizontal_current_time = 0;
+    }
+
+    m_move_horizontal_delta_accum += speed;
 
     auto rotated = m_figure;
     if (app.Input->IsKeyClicked(SDL_SCANCODE_UP))
-    {
-        rotated = m_figure.Rotate(MatrixRotateDir::Left);
-    }
-    if (app.Input->IsKeyClicked(SDL_SCANCODE_DOWN))
     {
         rotated = m_figure.Rotate(MatrixRotateDir::Right);
     }
@@ -54,8 +69,19 @@ void Tetramino::Update(GameApp& app)
         m_figure = rotated;
     }
 
-    m_pos_accumulator += m_speed;
-    if (m_pos_accumulator >= CellSize) {
+    speed = m_speed;
+    if (app.Input->IsKeyDown(SDL_SCANCODE_DOWN))
+    {
+        speed = ease_apply(m_speed, DownSpeed, &m_down_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+    }
+    else
+    {
+        m_down_current_time = 0;
+    }
+
+    m_pos_accumulator += speed;
+    if (m_pos_accumulator >= CellSize)
+    {
         m_pos.y += 1;
         m_pos_accumulator -= CellSize;
     }

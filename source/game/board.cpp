@@ -1,5 +1,6 @@
 #include "board.h"
 
+#include "constant.h"
 #include "core/color.h"
 #include "core/math/point.h"
 #include "game_app.h"
@@ -9,7 +10,7 @@
 Board::Board(GameApp& app)
     : m_app { app }
 {
-    m_current = m_figure_gen.MakeRandFigure(app, { 0, 0 }, 2.5f);
+    m_current = MakeFigure();
 }
 
 void Board::Update(GameApp& app)
@@ -25,9 +26,9 @@ void Board::Update(GameApp& app)
 
         if (!m_delete_row_anim)
         {
-            if (auto r = FindFilledRow(); r)
+            if (auto r = FindFilledRows(); !r.empty())
             {
-                m_delete_row_anim = MakeDeleteColorAnimation(*r);
+                m_delete_row_anim = MakeDeleteColorAnimation(std::move(r));
             }
         }
     }
@@ -139,7 +140,7 @@ void Board::NextFigure()
     }
 
     delete m_current;
-    m_current = m_figure_gen.MakeRandFigure(m_app, { 0, 0 }, 1.5f);
+    m_current = MakeFigure();
 }
 
 void Board::DeleteRow(size_t row)
@@ -161,8 +162,9 @@ void Board::DeleteRow(size_t row)
     }
 }
 
-std::optional<size_t> Board::FindFilledRow() const
+std::vector<size_t> Board::FindFilledRows() const
 {
+    std::vector<size_t> result;
     for (size_t r = 0; r < m_board_matrix.GetRows(); r++)
     {
         bool filled = true;
@@ -178,28 +180,39 @@ std::optional<size_t> Board::FindFilledRow() const
 
         if (filled)
         {
-            return r;
+            result.emplace_back(r);
         }
     }
-    return std::nullopt;
+    return result;
 }
 
-std::function<void()> Board::MakeDeleteColorAnimation(size_t row)
+std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 {
-    return [this, row, alfa = (int)Colors::Opaque.a]() mutable
+    return [this, rows = std::move(rows), alfa = (int)Colors::Opaque.a]() mutable
     {
         alfa -= 5;
-        for (size_t c = 0; c < m_board_matrix.GetCols(); c++)
+        for (size_t r : rows)
         {
-            auto& v = m_board_matrix[row][c];
-            if (v)
-                v->Color().a = alfa;
+            for (size_t c = 0; c < m_board_matrix.GetCols(); c++)
+            {
+                auto& v = m_board_matrix[r][c];
+                if (v)
+                    v->Color().a = alfa;
+            }
         }
 
         if (alfa <= 0)
         {
-            DeleteRow(row);
+            for (size_t r : rows)
+            {
+                DeleteRow(r);
+            }
             m_delete_row_anim = nullptr;
         }
     };
+}
+
+Tetramino* Board::MakeFigure()
+{
+    return m_figure_gen.MakeRandFigure(m_app, { FigureStartPosX, FigureStartPosY }, m_current_speed);
 }
