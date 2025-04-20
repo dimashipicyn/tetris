@@ -9,6 +9,11 @@ class App
 public:
     bool Init(const Size& window_size);
     void Run();
+    void RunOnce();
+
+    bool Running() {
+        return m_running;
+    }
 
     Assets* Assets;
     Renderer* Renderer;

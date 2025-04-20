@@ -11,52 +11,26 @@
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/${presetName}",
-        "cacheVariables": {
-            "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-            "CMAKE_CXX_STANDARD": "17",
-            "CMAKE_CXX_STANDARD_REQUIRED": "ON",
-            "CMAKE_CXX_EXTENSIONS": "OFF",
-            "CMAKE_PREFIX_PATH": "$env{QTROOT}",
-            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin",
-            "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/bin",
-            "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/bin"
-        },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "intelliSenseMode": "windows-clang-x64"
-        }
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/bin",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/bin",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
-      "name": "base debug",
+      "name": "base-emsdk",
       "hidden": true,
-      "inherits": "base",
+      "inherits": [
+        "base"
+      ],
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "base release",
-      "hidden": true,
-      "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "name": "msvc",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe"
-      }
-    },
-    {
-      "name": "gcc",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++"
+        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+        "VCPKG_TARGET_TRIPLET": "wasm32-emscripten"
       }
     },
     {
@@ -68,37 +42,30 @@
       }
     },
     {
-      "name": "msvc-debug",
-      "inherits": ["base debug", "msvc"]
-    },
-    {
-      "name": "msvc-release",
-      "inherits": ["base release", "msvc"]
-    },
-    {
-      "name": "gcc-debug",
-      "inherits": ["base debug", "gcc"]
-    },
-    {
-      "name": "gcc-release",
-      "inherits": ["base release", "gcc"]
-    },
-    {
       "name": "clang-debug",
-      "inherits": ["base debug", "clang"]
+      "inherits": [
+        "base",
+        "clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     },
     {
       "name": "clang-release",
-      "inherits": ["base release", "clang"]
-    }
-  ],
-
-  "buildPresets": [
+      "inherits": [
+        "base",
+        "clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
     {
-      "name": "default-build",
-      "displayName": "Default",
-      "configurePreset": "clang-debug",
-      "description": "Vanilla build"
+      "name": "emscripten",
+      "inherits": [
+        "base-emsdk"
+      ]
     }
   ]
 }

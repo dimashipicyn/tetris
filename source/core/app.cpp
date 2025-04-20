@@ -15,28 +15,33 @@ void App::Run()
     m_prev_ticks = SDL_GetTicks();
     while (m_running)
     {
-        auto now = SDL_GetTicks();
-        auto elapsed = now - m_prev_ticks;
-        m_prev_ticks = now;
+        RunOnce();
+    }
+}
 
-        DeltaTime = elapsed / 1000.0f;
-        
-        HandleEvents();
-        
-        m_ticks_acc += elapsed;
-        // while (m_ticks_acc >= m_step_time_ms)
-        {
-            Update();
-            m_ticks_acc -= m_step_time_ms;
-        }
+void App::RunOnce()
+{
+    auto now = SDL_GetTicks();
+    auto elapsed = now - m_prev_ticks;
+    m_prev_ticks = now;
 
-        Render();
+    DeltaTime = elapsed / 1000.0f;
 
-        int delay = m_frame_time_ms - elapsed;
-        if (delay > 0)
-        {
-            SDL_Delay(delay);
-        }
+    HandleEvents();
+
+    m_ticks_acc += elapsed;
+    // while (m_ticks_acc >= m_step_time_ms)
+    {
+        Update();
+        m_ticks_acc -= m_step_time_ms;
+    }
+
+    Render();
+
+    int delay = m_frame_time_ms - elapsed;
+    if (delay > 0)
+    {
+        SDL_Delay(delay);
     }
 }
 

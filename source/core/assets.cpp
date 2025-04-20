@@ -31,5 +31,9 @@ Texture Assets::GetTexture(const std::string& path, const Size& size)
 
 std::string Assets::ResolvePath(const std::string& path) const
 {
+#ifdef __EMSCRIPTEN__
+    return "/" + path;
+#else
     return std::string(SDL_GetBasePath()) + "../assets/" + path;
+#endif
 }
