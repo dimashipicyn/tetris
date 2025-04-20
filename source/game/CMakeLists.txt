@@ -6,4 +6,6 @@ PRIVATE
 	pentamino.cpp
 	board.h
 	board.cpp
+	grid.h
+	grid.cpp
 )

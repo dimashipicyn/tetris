@@ -97,8 +97,8 @@ void Tetramino::Draw(GameApp& app)
             if (v)
             {
                 Point pos;
-                pos.x = m_pos.x * CellSize + CellSize * col;
-                pos.y = m_pos.y * CellSize + CellSize * row;
+                pos.x = m_offset.x + m_pos.x * CellSize + CellSize * col;
+                pos.y = m_offset.y + m_pos.y * CellSize + CellSize * row;
 
                 v->SetPos(pos);
                 v->Draw(app);
@@ -116,9 +116,9 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
     if (std::exchange(first, false)) {
         cell.Color() = Colors::RED;
         figures[(size_t)TetraminoType::Z] = {
+            std::nullopt, std::nullopt, cell, std::nullopt,
+            std::nullopt, cell,  cell,  std::nullopt,
             std::nullopt, cell,  std::nullopt, std::nullopt,
-            cell,  cell,  std::nullopt, std::nullopt,
-            cell,  std::nullopt, std::nullopt, std::nullopt,
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
@@ -156,17 +156,17 @@ const Figure& Tetramino::FromType(Assets* assets, TetraminoType type)
 
         cell.Color() = Colors::PINK;
         figures[(size_t)TetraminoType::J] = {
-            std::nullopt, cell,  std::nullopt, std::nullopt,
-            std::nullopt, cell,  std::nullopt, std::nullopt,
-            cell,  cell,  std::nullopt, std::nullopt,
+            std::nullopt, std::nullopt, cell, std::nullopt,
+            std::nullopt, std::nullopt, cell, std::nullopt,
+            std::nullopt, cell, cell, std::nullopt,
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
 
         cell.Color() = Colors::BROWN;
         figures[(size_t)TetraminoType::T] = {
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
             std::nullopt, cell,  std::nullopt, std::nullopt,
             cell,  cell,  cell, std::nullopt,
-            std::nullopt, std::nullopt, std::nullopt, std::nullopt,
             std::nullopt, std::nullopt, std::nullopt, std::nullopt,
         };
     }

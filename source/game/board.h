@@ -34,6 +34,7 @@ private:
 
     GameApp& m_app;
     Tetramino* m_current = nullptr;
+    Tetramino* m_next = nullptr;
     FigureGenerator m_figure_gen{};
 
     std::function<void()> m_delete_row_anim;

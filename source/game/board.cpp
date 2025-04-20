@@ -4,6 +4,8 @@
 #include "core/color.h"
 #include "core/math/point.h"
 #include "game_app.h"
+#include "grid.h"
+
 #include <cstddef>
 #include <optional>
 
@@ -11,6 +13,11 @@ Board::Board(GameApp& app)
     : m_app { app }
 {
     m_current = MakeFigure();
+    m_current->SetOffset({BoardPositionX , BoardPositionY });
+    m_current->SetPos({ FigureStartPosX, FigureStartPosY });
+
+    m_next = MakeFigure();
+    m_next->SetOffset({PreviewFigurePositionX , PreviewFigurePositionY });
 }
 
 void Board::Update(GameApp& app)
@@ -43,23 +50,14 @@ void Board::Draw(GameApp& app)
     if (m_current)
     {
         m_current->Draw(app);
+        m_next->Draw(app);
     }
 }
 
 void Board::DrawGrid(GameApp& app)
 {
-    for (int i = 0; i <= Height; i++)
-    {
-        Point p1 { 0, i * CellSize };
-        Point p2 { CellSize * Width, i * CellSize };
-        app.Renderer->DrawLine(p1, p2, Colors::WHITE & HalfTransparent);
-    }
-    for (int i = 0; i <= Width; i++)
-    {
-        Point p1 { i * CellSize, 0 };
-        Point p2 { i * CellSize, CellSize * Height };
-        app.Renderer->DrawLine(p1, p2, Colors::WHITE & HalfTransparent);
-    }
+    ::DrawGrid(app.Renderer, {BoardPositionX, BoardPositionY}, {Width, Height}, {CellSize, CellSize}, Colors::WHITE & HalfTransparent);
+    ::DrawGrid(app.Renderer, {PreviewFigurePositionX, PreviewFigurePositionY}, {4, 4}, {CellSize, CellSize}, Colors::WHITE & HalfTransparent);
 }
 
 void Board::DrawCells(GameApp& app)
@@ -73,8 +71,8 @@ void Board::DrawCells(GameApp& app)
                 continue;
 
             Point pos;
-            pos.x = CellSize * c;
-            pos.y = CellSize * r;
+            pos.x = BoardPositionX + CellSize * c;
+            pos.y = BoardPositionY + CellSize * r;
 
             v->SetPos(pos);
             v->Draw(app);
@@ -140,7 +138,12 @@ void Board::NextFigure()
     }
 
     delete m_current;
-    m_current = MakeFigure();
+    m_current = m_next;
+    m_current->SetOffset({BoardPositionX , BoardPositionY });
+    m_current->SetPos({ FigureStartPosX, FigureStartPosY });
+
+    m_next = MakeFigure();
+    m_next->SetOffset({PreviewFigurePositionX , PreviewFigurePositionY });
 }
 
 void Board::DeleteRow(size_t row)
@@ -214,5 +217,5 @@ std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 
 Tetramino* Board::MakeFigure()
 {
-    return m_figure_gen.MakeRandFigure(m_app, { FigureStartPosX, FigureStartPosY }, m_current_speed);
+    return m_figure_gen.MakeRandFigure(m_app, m_current_speed);
 }

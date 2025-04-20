@@ -50,12 +50,17 @@ public:
         m_pos = pos;
     }
 
+    void SetOffset(const Point& offset) {
+        m_offset = offset;
+    }
+
 private:
     const Figure& FromType(Assets* assets, TetraminoType type);
 
     Figure m_figure;
 
     Point m_pos{};
+    Point m_offset{};
     float m_pos_accumulator{};
 
     float m_move_horizontal_delta_accum{};

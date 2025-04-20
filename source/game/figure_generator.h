@@ -6,9 +6,9 @@
 class FigureGenerator
 {
 public:
-    Tetramino* MakeRandFigure(GameApp& app, const Point& pos, float speed) {
+    Tetramino* MakeRandFigure(GameApp& app, float speed) {
         TetraminoType type = (TetraminoType)m_dist(m_rd);
-        return new Tetramino(app, pos, speed, type);
+        return new Tetramino(app, {}, speed, type);
     }
 private:
     std::random_device m_rd;

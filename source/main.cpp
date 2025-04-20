@@ -1,15 +1,15 @@
+#include "game/constant.h"
 #define SDL_MAIN_HANDLED
 
 #include "game/game_app.h"
-#include "game/board.h"
 
 int main(int, char**)
 {
     GameApp app;
 
     Size wsize{
-        Width * CellSize,
-        Height * CellSize
+        WindowWidth,
+        WindowHeight
     };
 
     app.Init(wsize);
