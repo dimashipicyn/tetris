@@ -1,5 +1,7 @@
 #include "assets.h"
 
+#include "path_resolver.h"
+
 #include "SDL_image.h"
 #include <SDL_filesystem.h>
 
@@ -27,13 +29,4 @@ Texture Assets::GetTexture(const std::string& path, const Size& size)
 
     m_textures.emplace(std::make_pair(path, texture));
     return texture;
-}
-
-std::string Assets::ResolvePath(const std::string& path) const
-{
-#ifdef __EMSCRIPTEN__
-    return "/" + path;
-#else
-    return std::string(SDL_GetBasePath()) + "../assets/" + path;
-#endif
 }

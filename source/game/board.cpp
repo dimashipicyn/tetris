@@ -18,6 +18,9 @@ Board::Board(GameApp& app)
 
     m_next = MakeFigure();
     m_next->SetOffset({PreviewFigurePositionX , PreviewFigurePositionY });
+
+    m_font.Load("fonts/minogram_6x10.xml");
+    m_font.SetScale(2.0f);
 }
 
 void Board::Update(GameApp& app)
@@ -47,11 +50,21 @@ void Board::Draw(GameApp& app)
 {
     DrawGrid(app);
     DrawCells(app);
-    if (m_current)
-    {
-        m_current->Draw(app);
-        m_next->Draw(app);
-    }
+
+    const auto size = m_font.CalcTextSize("Next figure");
+    auto center_x = PreviewFigurePositionX + (4 * CellSize / 2);
+    Point pos{center_x - size.x / 2, PreviewFigurePositionY - size.y * 2};
+    m_font.Draw(pos, "Next figure");
+
+    m_current->Draw(app);
+    m_next->Draw(app);
+
+    pos = {PreviewFigurePositionX, PreviewFigurePositionY + (5 * CellSize)};
+    m_font.Draw(pos, "Score: %d", m_score);
+    pos.y += size.y * 2;
+    m_font.Draw(pos, "Level: 0");
+    pos.y += size.y * 2;
+    m_font.Draw(pos, "Lines: %d", m_removed_rows);
 }
 
 void Board::DrawGrid(GameApp& app)
@@ -206,6 +219,7 @@ std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 
         if (alfa <= 0)
         {
+            m_removed_rows += rows.size();
             for (size_t r : rows)
             {
                 DeleteRow(r);

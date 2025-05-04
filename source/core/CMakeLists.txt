@@ -8,4 +8,8 @@ target_sources(${PROJECT_NAME} PUBLIC
     assets.cpp
     renderer.h
     renderer.cpp
+    font.h
+    font.cpp
+    provider.h
+    provider.cpp
 )

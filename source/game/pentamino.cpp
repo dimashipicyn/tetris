@@ -29,7 +29,7 @@ void Tetramino::Update(GameApp& app)
     }
     else if (app.Input->IsKeyDown(SDL_SCANCODE_LEFT))
     {
-        speed = ease_apply(m_horizontal_speed, DownSpeed, &m_move_horizontal_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+        speed = ease_apply(m_horizontal_speed, HorizontalMoveSpeed, &m_move_horizontal_current_time, 0.5f, app.DeltaTime, ease_in_cubic);
         if (m_move_horizontal_delta_accum >= CellSize)
         {
             new_pos.x -= 1;
@@ -42,7 +42,7 @@ void Tetramino::Update(GameApp& app)
     }
     else if (app.Input->IsKeyDown(SDL_SCANCODE_RIGHT))
     {
-        speed = ease_apply(m_horizontal_speed, DownSpeed, &m_move_horizontal_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+        speed = ease_apply(m_horizontal_speed, HorizontalMoveSpeed, &m_move_horizontal_current_time, 0.5f, app.DeltaTime, ease_in_cubic);
         if (m_move_horizontal_delta_accum >= CellSize)
         {
             new_pos.x += 1;
@@ -72,7 +72,7 @@ void Tetramino::Update(GameApp& app)
     speed = m_speed;
     if (app.Input->IsKeyDown(SDL_SCANCODE_DOWN))
     {
-        speed = ease_apply(m_speed, DownSpeed, &m_down_current_time, 0.7f, app.DeltaTime, ease_in_cubic);
+        speed = ease_apply(m_speed, DownSpeed, &m_down_current_time, 0.25f, app.DeltaTime, ease_in_cubic);
     }
     else
     {

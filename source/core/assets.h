@@ -19,8 +19,6 @@ public:
     Texture GetTexture(const std::string& path, const Size& size = {});
 
 private:
-    std::string ResolvePath(const std::string& path) const;
-
     Renderer* m_renderer {};
     std::map<std::string, Texture> m_textures {};
 };

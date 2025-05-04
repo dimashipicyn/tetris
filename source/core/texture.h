@@ -1,7 +1,6 @@
 #pragma once
 
 #include "renderer.h"
-#include "sdl.h"
 
 #include <SDL_render.h>
 #include <memory>
@@ -10,6 +9,7 @@ class Texture
 {
     friend class Renderer;
 public:
+    Texture() = default;
     Texture(SDL_Texture* tex);
 
     SDL_Rect Dest {};

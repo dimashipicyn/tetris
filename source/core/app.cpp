@@ -1,10 +1,14 @@
 #include "app.h"
+#include "provider.h"
 
 bool App::Init(const Size& window_size)
 {
     Renderer = new ::Renderer(window_size.x, window_size.y);
     Assets = new ::Assets(Renderer);
     Input = new ::Input();
+
+    Provider::Self().m_renderer = Renderer;
+    Provider::Self().m_assets = Assets;
 
     OnInit();
     return true;
