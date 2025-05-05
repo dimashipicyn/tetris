@@ -53,7 +53,7 @@ void Board::Draw(GameApp& app)
 
     const auto size = m_font.CalcTextSize("Next figure");
     auto center_x = PreviewFigurePositionX + (4 * CellSize / 2);
-    Point pos{center_x - size.x / 2, PreviewFigurePositionY - size.y * 2};
+    Point pos{center_x - size.x / 2, PreviewFigurePositionY - size.y * 3};
     m_font.Draw(pos, "Next figure");
 
     m_current->Draw(app);
@@ -61,9 +61,9 @@ void Board::Draw(GameApp& app)
 
     pos = {PreviewFigurePositionX, PreviewFigurePositionY + (5 * CellSize)};
     m_font.Draw(pos, "Score: %d", m_score);
-    pos.y += size.y * 2;
-    m_font.Draw(pos, "Level: 0");
-    pos.y += size.y * 2;
+    pos.y += size.y * 3;
+    m_font.Draw(pos, "Level: %d", m_level);
+    pos.y += size.y * 3;
     m_font.Draw(pos, "Lines: %d", m_removed_rows);
 }
 
@@ -178,6 +178,20 @@ void Board::DeleteRow(size_t row)
     }
 }
 
+void Board::DeleteRows(std::vector<size_t> rows)
+{
+    m_removed_rows += rows.size();
+    for (size_t r : rows)
+    {
+        DeleteRow(r);
+    }
+
+    if (m_removed_rows % 10 == 0)
+    {
+        m_level += 1;
+    }
+}
+
 std::vector<size_t> Board::FindFilledRows() const
 {
     std::vector<size_t> result;
@@ -219,11 +233,7 @@ std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 
         if (alfa <= 0)
         {
-            m_removed_rows += rows.size();
-            for (size_t r : rows)
-            {
-                DeleteRow(r);
-            }
+            DeleteRows(std::move(rows));
             m_delete_row_anim = nullptr;
         }
     };
@@ -231,5 +241,5 @@ std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 
 Tetramino* Board::MakeFigure()
 {
-    return m_figure_gen.MakeRandFigure(m_app, m_current_speed);
+    return m_figure_gen.MakeRandFigure(m_app, m_current_speed + (m_level * 0.1f));
 }

@@ -3,6 +3,7 @@
 #include "assets.h"
 #include "renderer.h"
 #include "input.h"
+#include "state.h"
 
 class App
 {
@@ -18,6 +19,7 @@ public:
     Assets* Assets;
     Renderer* Renderer;
     Input* Input;
+    StateManager* StateManager;
 
     float DeltaTime{};
 

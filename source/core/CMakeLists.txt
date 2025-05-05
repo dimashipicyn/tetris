@@ -12,4 +12,6 @@ target_sources(${PROJECT_NAME} PUBLIC
     font.cpp
     provider.h
     provider.cpp
+    state.h
+    state.cpp
 )

@@ -29,6 +29,7 @@ private:
     void DrawCells(GameApp& app);
     void NextFigure();
     void DeleteRow(size_t row);
+    void DeleteRows(std::vector<size_t> rows);
     std::vector<size_t> FindFilledRows() const;
     std::function<void()> MakeDeleteColorAnimation(std::vector<size_t> rows);
     Tetramino* MakeFigure();
@@ -48,4 +49,5 @@ private:
     float m_current_speed { MinFigureSpeed };
     int m_removed_rows{0};
     int m_score{0};
+    int m_level{1};
 };

@@ -1,7 +1,5 @@
 #include "game_app.h"
 
-#include "core/font.h"
-
 void GameApp::OnInit()
 {
     board = new Board(*this);

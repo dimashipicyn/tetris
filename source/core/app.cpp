@@ -1,14 +1,18 @@
 #include "app.h"
 #include "provider.h"
+#include "state.h"
 
 bool App::Init(const Size& window_size)
 {
     Renderer = new ::Renderer(window_size.x, window_size.y);
     Assets = new ::Assets(Renderer);
     Input = new ::Input();
+    StateManager = new ::StateManager(*this);
 
     Provider::Self().m_renderer = Renderer;
     Provider::Self().m_assets = Assets;
+    Provider::Self().m_input = Input;
+    Provider::Self().m_state_manager = StateManager;
 
     OnInit();
     return true;
@@ -58,6 +62,7 @@ void App::HandleEvents()
 void App::Update()
 {
     OnUpdate();
+    StateManager->CurrentState()->Update(*this);
 }
 
 void App::Render()
@@ -65,6 +70,7 @@ void App::Render()
     Renderer->Clear();
 
     OnRender();
+    StateManager->CurrentState()->Draw(*this);
     
     Renderer->Present();
 }
