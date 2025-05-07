@@ -10,5 +10,5 @@ public:
     void OnUpdate() override;
     void OnRender() override;
 
-    Board* board{};
+    // Board* board{};
 };

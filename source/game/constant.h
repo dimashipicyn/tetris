@@ -5,10 +5,12 @@ constexpr const int Height = 20;
 constexpr const int CellSize = 32;
 
 constexpr const int WindowWidth = Width * CellSize * 2;
-constexpr const int WindowHeight = Height * CellSize;
+constexpr const int WindowHeight = Height * CellSize + (2 * CellSize);
+constexpr const int WindowCenterW = WindowWidth / 2;
+constexpr const int WindowCenterH = WindowHeight / 2;
 
-constexpr const int BoardPositionX = WindowWidth / 6;
-constexpr const int BoardPositionY = 0;
+constexpr const int BoardPositionX = CellSize;
+constexpr const int BoardPositionY = CellSize;
 
 constexpr const int PreviewFigurePositionX = BoardPositionX + CellSize * (Width + 1);
 constexpr const int PreviewFigurePositionY = CellSize;

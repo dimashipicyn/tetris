@@ -61,9 +61,9 @@ void Board::Draw(GameApp& app)
 
     pos = {PreviewFigurePositionX, PreviewFigurePositionY + (5 * CellSize)};
     m_font.Draw(pos, "Score: %d", m_score);
-    pos.y += size.y * 3;
+    pos.y += size.y * 2;
     m_font.Draw(pos, "Level: %d", m_level);
-    pos.y += size.y * 3;
+    pos.y += size.y * 2;
     m_font.Draw(pos, "Lines: %d", m_removed_rows);
 }
 
@@ -241,5 +241,6 @@ std::function<void()> Board::MakeDeleteColorAnimation(std::vector<size_t> rows)
 
 Tetramino* Board::MakeFigure()
 {
-    return m_figure_gen.MakeRandFigure(m_app, m_current_speed + (m_level * 0.1f));
+    const auto type = m_figure_gen.MakeRandFigure();
+    return new Tetramino(this, m_app, {}, m_current_speed + (m_level * 0.1f), type);
 }

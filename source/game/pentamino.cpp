@@ -11,8 +11,9 @@
 
 #include <SDL_scancode.h>
 
-Tetramino::Tetramino(GameApp& app, const Point& pos, float speed, TetraminoType type)
-    : m_figure(FromType(app.Assets, type))
+Tetramino::Tetramino(Board* board, GameApp& app, const Point& pos, float speed, TetraminoType type)
+    : m_board(board)
+    , m_figure(FromType(app.Assets, type))
     , m_pos(pos)
     , m_speed(speed)
 {
@@ -62,8 +63,7 @@ void Tetramino::Update(GameApp& app)
         rotated = m_figure.Rotate(MatrixRotateDir::Right);
     }
 
-    Board* board = app.board;
-    if (!board->Intersect(new_pos, rotated))
+    if (!m_board->Intersect(new_pos, rotated))
     {
         m_pos = new_pos;
         m_figure = rotated;

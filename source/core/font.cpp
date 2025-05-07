@@ -78,7 +78,6 @@ Font::~Font()
 }
 
 Font::Font(const char* font_path)
-    : m_impl(std::make_unique<Impl>())
 {
     Load(font_path);
 }
@@ -87,7 +86,7 @@ void Font::Load(const char* font_path)
 {
     if (!m_impl)
     {
-        m_impl = std::make_unique<Impl>();
+        m_impl = std::make_shared<Impl>();
     }
 
     FontData data {};
@@ -129,7 +128,7 @@ void Font::SetScale(float scale)
     m_impl->scale = scale;
 }
 
-Size Font::CalcTextSize(const char* fmt, ...)
+Size Font::CalcTextSize(const char* fmt, ...) const
 {
     static char buffer[BUFSIZ];
 
@@ -148,7 +147,12 @@ Size Font::CalcTextSize(const char* fmt, ...)
 
         const auto& fc = it->second;
         result.x += (fc.xadvance * m_impl->scale);
-        result.y = std::max(result.y, fc.height);
+        result.y = std::max<int>(result.y, fc.height * m_impl->scale);
     }
     return result;
+}
+
+void Font::SetColor(const Color& color)
+{
+    m_impl->texture.SetColor(color);
 }

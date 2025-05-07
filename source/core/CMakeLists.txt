@@ -14,4 +14,6 @@ target_sources(${PROJECT_NAME} PUBLIC
     provider.cpp
     state.h
     state.cpp
+    ui.h
+    ui.cpp
 )

@@ -8,4 +8,8 @@ PRIVATE
 	board.cpp
 	grid.h
 	grid.cpp
+	menu_state.h
+	menu_state.cpp
+	game_state.h
+	game_state.cpp
 )

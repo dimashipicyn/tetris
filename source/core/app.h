@@ -1,9 +1,10 @@
 #pragma once
 
 #include "assets.h"
-#include "renderer.h"
 #include "input.h"
+#include "renderer.h"
 #include "state.h"
+#include "ui.h"
 
 class App
 {
@@ -12,16 +13,23 @@ public:
     void Run();
     void RunOnce();
 
-    bool Running() {
+    bool Running() const
+    {
         return m_running;
+    }
+
+    void Stop()
+    {
+        m_running = false;
     }
 
     Assets* Assets;
     Renderer* Renderer;
     Input* Input;
     StateManager* StateManager;
+    Ui* Ui;
 
-    float DeltaTime{};
+    float DeltaTime {};
 
 protected:
     virtual void OnInit() = 0;

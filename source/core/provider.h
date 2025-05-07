@@ -4,6 +4,7 @@ class Renderer;
 class Assets;
 class Input;
 class StateManager;
+class Ui;
 
 class Provider
 {
@@ -32,6 +33,16 @@ public:
         return m_state_manager;
     }
 
+    ::Ui* Ui()
+    {
+        return m_ui;
+    }
+
+    ::App* App()
+    {
+        return m_app;
+    }
+
 private:
     Provider() = default;
     Provider(const Provider&) = delete;
@@ -41,4 +52,6 @@ private:
     ::Assets* m_assets {};
     ::Input* m_input {};
     ::StateManager* m_state_manager {};
+    ::Ui* m_ui {};
+    ::App* m_app {};
 };

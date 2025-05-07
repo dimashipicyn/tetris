@@ -14,6 +14,11 @@ public:
         , m_color(color)
     {}
 
+    Point GetPos() const
+    {
+        return {m_texture.Dest.x, m_texture.Dest.y};
+    }
+
     void SetPos(const Point& pos) {
         m_texture.Dest.x = pos.x;
         m_texture.Dest.y = pos.y;

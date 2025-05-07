@@ -10,6 +10,7 @@
 #include <functional>
 
 class GameApp;
+class Board;
 
 enum class TetraminoType
 {
@@ -32,7 +33,7 @@ using Figure = Matrix<std::optional<Cell>, 4>;
 class Tetramino
 {
 public:
-    Tetramino(GameApp& app, const Point& pos, float speed, TetraminoType type);
+    Tetramino(Board* board, GameApp& app, const Point& pos, float speed, TetraminoType type);
 
     void Update(GameApp& app);
     void Draw(GameApp& app);
@@ -57,6 +58,7 @@ public:
 private:
     const Figure& FromType(Assets* assets, TetraminoType type);
 
+    Board* m_board{};
     Figure m_figure;
 
     Point m_pos{};

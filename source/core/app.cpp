@@ -8,11 +8,14 @@ bool App::Init(const Size& window_size)
     Assets = new ::Assets(Renderer);
     Input = new ::Input();
     StateManager = new ::StateManager(*this);
+    Ui = new ::Ui;
 
     Provider::Self().m_renderer = Renderer;
     Provider::Self().m_assets = Assets;
     Provider::Self().m_input = Input;
     Provider::Self().m_state_manager = StateManager;
+    Provider::Self().m_ui = Ui;
+    Provider::Self().m_app = this;
 
     OnInit();
     return true;

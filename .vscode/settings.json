@@ -6,5 +6,6 @@
         "-compile-commands-dir=${workspaceFolder}/out/"
     ],
     "cmake.copyCompileCommands": "${workspaceFolder}/out/compile_commands.json",
-    "search.useIgnoreFiles": true
+    "search.useIgnoreFiles": true,
+    "C_Cpp.intelliSenseEngine": "disabled"
 }

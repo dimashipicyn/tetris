@@ -47,3 +47,8 @@ State* StateManager::CurrentState()
     static State null_state;
     return &null_state;
 }
+
+State* StateManager::GetState(int state_id)
+{
+    return m_states[state_id].get();
+}
