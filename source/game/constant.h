@@ -22,4 +22,4 @@ constexpr const float HorizontalMoveSpeed = 30.0f;
 constexpr const float DownSpeed = 15.0f;
 
 constexpr const int FigureStartPosX = Width / 3;
-constexpr const int FigureStartPosY = 0;
+constexpr const int FigureStartPosY = -4;

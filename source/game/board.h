@@ -6,11 +6,9 @@
 #include "core/font.h"
 #include "core/math/matrix.h"
 
-
 #include "constant.h"
 #include "figure_generator.h"
 #include "pentamino.h"
-
 
 #include <functional>
 #include <optional>
@@ -19,11 +17,14 @@ class Board
 {
 public:
     Board(GameApp& app);
-    bool Intersect(const Point& pos, const Figure& figure) const;
-
     void Update(GameApp& app);
     void Draw(GameApp& app);
+    bool Intersect(const Point& pos, const Figure& figure) const;
 
+    bool GameOver() const;
+    int Score() const;
+    int Lines() const;
+    int Level() const;
 private:
     void DrawGrid(GameApp& app);
     void DrawCells(GameApp& app);
@@ -50,4 +51,5 @@ private:
     int m_removed_rows{0};
     int m_score{0};
     int m_level{1};
+    bool m_game_over{};
 };

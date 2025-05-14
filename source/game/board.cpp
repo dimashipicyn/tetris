@@ -25,7 +25,7 @@ Board::Board(GameApp& app)
 
 void Board::Update(GameApp& app)
 {
-    if (m_current)
+    if (!m_game_over && m_current)
     {
         m_current->Update(app);
         if (Intersect(m_current->GetPos(), m_current->GetFigure()))
@@ -44,6 +44,15 @@ void Board::Update(GameApp& app)
     }
 
     if (m_delete_row_anim) m_delete_row_anim();
+
+    for (size_t c = 0; c < m_board_matrix.GetCols(); c++)
+    {
+        if (m_board_matrix.Value(0, c).has_value())
+        {
+            m_game_over = true;
+            break;
+        }
+    }
 }
 
 void Board::Draw(GameApp& app)
@@ -112,7 +121,7 @@ bool Board::Intersect(const Point& pos, const Figure& figure) const
                 return true;
             }
 
-            if (b_row < 0 || b_row >= (int)m_board_matrix.GetRows())
+            if (b_row >= (int)m_board_matrix.GetRows())
             {
                 return true;
             }
@@ -125,6 +134,26 @@ bool Board::Intersect(const Point& pos, const Figure& figure) const
         }
     }
     return false;
+}
+
+bool Board::GameOver() const
+{
+    return m_game_over;
+}
+
+int Board::Score() const
+{
+    return m_score;
+}
+
+int Board::Lines() const
+{
+    return m_removed_rows;
+}
+
+int Board::Level() const
+{
+    return m_level;
 }
 
 void Board::NextFigure()

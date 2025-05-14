@@ -29,5 +29,5 @@ void GameState::NewGame(GameApp& app)
 
 bool GameState::Played() const
 {
-    return !!m_board;
+    return !!m_board && !m_board->GameOver();
 }

@@ -101,7 +101,10 @@ void Tetramino::Draw(GameApp& app)
                 pos.y = m_offset.y + m_pos.y * CellSize + CellSize * row;
 
                 v->SetPos(pos);
-                v->Draw(app);
+                if (pos.y >= BoardPositionY)
+                {
+                    v->Draw(app);
+                }
             }
         }
     }
